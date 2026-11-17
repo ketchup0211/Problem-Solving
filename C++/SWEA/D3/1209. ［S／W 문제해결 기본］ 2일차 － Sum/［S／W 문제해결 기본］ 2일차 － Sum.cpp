@@ -37,38 +37,32 @@ using namespace std;
 void solve(int tc){
     int number;
     cin >> number;
+    
     vector<int> rowSum(100, 0);
     vector<int> colSum(100, 0);
-    vector<int> diagSum(2, 0);
-    
-    vector<vector<int>> matrix(100, vector<int>(100));
-    for(int i = 0; i < 100; i++){
-        for(int j = 0; j <100; j++){
-            cin >> matrix[i][j];
-        }
-    }
-
-    for(int i = 0; i < 100; i++){
-        for(int j = 0; j <100; j++){
-            //	행의 합
-            rowSum[i] += matrix[i][j];
-            //	열의 합
-            colSum[j] +=matrix[i][j];
-            //	대각선의 합
-            if(i==j) diagSum[0] += matrix[i][j];
-            if(i+j==99) diagSum[1] += matrix[i][j];
-        } 
-    }
-    
+    int diag1 = 0, diag2 = 0;
     int max_val = 0;
     
     for(int i = 0; i < 100; i++){
-        max_val = max({max_val, rowSum[i], colSum[i]});
+        for(int j = 0; j < 100; j++){
+            int val;
+            cin >> val;
+            
+            // 1. 입력받는 동시에 행, 열, 대각선 누적
+            rowSum[i] += val;
+            colSum[j] += val;
+            if(i == j) diag1 += val;
+            if(i + j == 99) diag2 += val;
+        } 
     }
     
-    max_val = max({max_val, diagSum[0], diagSum[1]});
+    // 2. 최댓값 갱신을 한 번에 처리
+    for(int i = 0; i < 100; i++){
+        max_val = max({max_val, rowSum[i], colSum[i]});
+    }
+    max_val = max({max_val, diag1, diag2});
     
-    cout << "#" << tc << " "<< max_val << "\n";
+    cout << "#" << tc << " " << max_val << "\n";
 }
 int main(int argc, char** argv)
 {
