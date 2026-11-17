@@ -43,35 +43,27 @@ void solve(int tc){
         cin >> boxes[i];
     }
     
-    int diff;
-    while(dump){
+    for (int d = 0; d < dump; d++) {
         auto max_it = max_element(boxes.begin(), boxes.end());
         auto min_it = min_element(boxes.begin(), boxes.end());
         
-        int max_idx = max_it - boxes.begin();
-        int min_idx = min_it - boxes.begin();
-        
-        int max_val = *max_it;
-        int min_val = *min_it;
-        
-        diff = max_val - min_val;
-        //	조기 종료
-        if(diff == 0 || diff ==1) {
-            cout << "#" << tc << " " << diff << "\n";
+        // 조기 종료 (이미 평탄화가 완료된 경우)
+        if (*max_it - *min_it <= 1) {
+            cout << "#" << tc << " " << (*max_it - *min_it) << "\n";
             return;
         }
         
-        //	dump 횟수가 다 할 때 까지 아래의 과정 반복
-        boxes[max_idx]--;
-        boxes[min_idx]++;
-        
-        dump--;
+        // 덤프 수행
+        (*max_it)--;
+        (*min_it)++;
     }
+    
+    // 주어진 덤프를 모두 소모했을 때의 최종 높이 차 계산
     auto max_it = max_element(boxes.begin(), boxes.end());
     auto min_it = min_element(boxes.begin(), boxes.end());
-    diff = *max_it- *min_it;
-    cout << "#" << tc << " " << diff << "\n";
-    return;
+    
+    cout << "#" << tc << " " << (*max_it - *min_it) << "\n";
+
 }
 int main(int argc, char** argv)
 {
